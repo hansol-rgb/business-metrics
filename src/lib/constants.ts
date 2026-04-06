@@ -27,6 +27,13 @@ export const PACKAGE_COLORS: Record<string, string> = {
   'VIVI': '#EC4899',
 };
 
+export const MONTH_KEYS = [
+  'm1', 'm2', 'm3', 'm4', 'm5', 'm6',
+  'm7', 'm8', 'm9', 'm10', 'm11', 'm12',
+] as const;
+
+export const FALLBACK_COLOR = '#94A3B8';
+
 export const NAV_ITEMS = [
   { label: '홈', href: '/', icon: 'LayoutDashboard' },
   { label: '매출', href: '/revenue', icon: 'TrendingUp' },
