@@ -1,8 +1,82 @@
-export default function HomePage() {
+import { getPNLData } from "@/lib/data";
+import { formatKRW, formatPercent } from "@/lib/format";
+import { MONTHS_KO, ACTUAL_MONTHS } from "@/lib/constants";
+import { Header } from "@/components/layout/header";
+import { SummaryCard } from "@/components/dashboard/summary-card";
+import {
+  RevenueTrendChart,
+  type RevenueTrendData,
+} from "@/components/dashboard/revenue-trend-chart";
+import {
+  RevenueVsGoalChart,
+  type RevenueGoalData,
+} from "@/components/dashboard/revenue-vs-goal-chart";
+import type { MonthlyValues } from "@/types/pnl";
+
+function getMonthValue(values: MonthlyValues, month: number): number {
+  return values[`m${month}` as keyof MonthlyValues] as number;
+}
+
+export default async function HomePage() {
+  const { summary } = await getPNLData();
+
+  const trendData: RevenueTrendData[] = MONTHS_KO.map((month, i) => {
+    const m = i + 1;
+    const revenue = getMonthValue(summary.totalRevenue, m);
+    const goal = getMonthValue(summary.revenueGoal, m);
+
+    return {
+      month,
+      actual: m <= ACTUAL_MONTHS ? revenue : null,
+      forecast: m >= ACTUAL_MONTHS ? revenue : null,
+      goal,
+    };
+  });
+
+  const barData: RevenueGoalData[] = MONTHS_KO.map((month, i) => ({
+    month,
+    revenue: getMonthValue(summary.totalRevenue, i + 1),
+    goal: getMonthValue(summary.revenueGoal, i + 1),
+  }));
+
+  const marginTrend =
+    summary.contributionMarginPct.ytd >= 80 ? "up" : "down";
+  const diffTrend = summary.diff.ytd > 0 ? "up" : "down";
+  const diffLabel = summary.diff.ytd > 0 ? "목표 초과" : "목표 미달";
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">대시보드</h1>
-      <p className="text-muted-foreground">데이터를 불러오는 중...</p>
+      <Header title="대시보드" description="BubbleShare 사업 지표 요약" />
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <SummaryCard
+          title="총 매출 (YTD)"
+          value={formatKRW(summary.totalRevenue.ytd)}
+          subValue={`연간 전망 ${formatKRW(summary.totalRevenue.ytdProjection)}`}
+        />
+        <SummaryCard
+          title="공헌이익 (YTD)"
+          value={formatKRW(summary.contributionMargin.ytd)}
+          subValue={formatPercent(summary.contributionMarginPct.ytd)}
+          trend={marginTrend}
+        />
+        <SummaryCard
+          title="목표 대비"
+          value={formatKRW(summary.diff.ytd)}
+          subValue={formatPercent(summary.diffPct.ytd)}
+          trend={diffTrend}
+          trendLabel={diffLabel}
+        />
+        <SummaryCard
+          title="CM/Hour"
+          value={formatKRW(summary.cmPerHour.ytd)}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <RevenueTrendChart data={trendData} />
+        <RevenueVsGoalChart data={barData} />
+      </div>
     </div>
   );
 }
