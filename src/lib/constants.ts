@@ -18,6 +18,7 @@ export const CLIENT_COLORS: Record<string, string> = {
   'Dongsuh': '#78716C',
   'Salesforce': '#00A1E0',
   'VIVI': '#EC4899',
+  'Gitlab': '#FC6D26',
 };
 
 export const PACKAGE_COLORS: Record<string, string> = {

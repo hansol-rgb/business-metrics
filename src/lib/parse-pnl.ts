@@ -37,6 +37,10 @@ function parseRow(cells: string[]): MonthlyValues {
 }
 
 export function parsePNLFromRows(rows: string[][]): PNLData {
+  if (rows.length < 78) {
+    throw new Error(`Invalid CSV: expected at least 78 rows, got ${rows.length}`);
+  }
+
   // 1-based row indices: row N in CSV = rows[N-1]
   const r = (n: number) => rows[n - 1] ?? [];
 

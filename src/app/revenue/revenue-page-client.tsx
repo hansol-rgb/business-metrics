@@ -112,13 +112,13 @@ export function RevenuePageClient({
   ];
 
   return (
-    <Tabs defaultValue={0}>
+    <Tabs defaultValue="clients">
       <TabsList>
-        <TabsTrigger value={0}>고객별</TabsTrigger>
-        <TabsTrigger value={1}>패키지별</TabsTrigger>
+        <TabsTrigger value="clients">고객별</TabsTrigger>
+        <TabsTrigger value="packages">패키지별</TabsTrigger>
       </TabsList>
 
-      <TabsContent value={0}>
+      <TabsContent value="clients">
         <div className="space-y-6 pt-4">
           <ChartWrapper
             title="고객별 YTD 매출"
@@ -140,7 +140,7 @@ export function RevenuePageClient({
         </div>
       </TabsContent>
 
-      <TabsContent value={1}>
+      <TabsContent value="packages">
         <div className="space-y-6 pt-4">
           <ChartWrapper title="패키지별 YTD 비중" height={400}>
             <PackageDonut data={packageDonutData} />

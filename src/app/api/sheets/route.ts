@@ -6,7 +6,11 @@ export async function GET() {
     const data = await getPNLData();
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Failed to fetch PNL data:', error);
-    return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Failed to fetch PNL data:', message);
+    return NextResponse.json(
+      { error: 'Failed to fetch data', ...(process.env.NODE_ENV === 'development' ? { details: message } : {}) },
+      { status: 500 }
+    );
   }
 }

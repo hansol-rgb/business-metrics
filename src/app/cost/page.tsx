@@ -142,7 +142,7 @@ export default async function CostPage() {
           <CostClientBar data={clientChartData} />
           <DataTable
             columns={clientColumns}
-            data={sortedClients as unknown as Record<string, unknown>[]}
+            data={sortedClients.map(c => ({ ...c, name: c.name, values: c.values } as Record<string, unknown>))}
             caption="고객별 비용 상세"
           />
         </TabsContent>
@@ -151,7 +151,7 @@ export default async function CostPage() {
           <CostPackageBar data={packageChartData} />
           <DataTable
             columns={packageColumns}
-            data={sortedPackages as unknown as Record<string, unknown>[]}
+            data={sortedPackages.map(p => ({ ...p, name: p.name, values: p.values } as Record<string, unknown>))}
             caption="패키지별 비용 상세"
           />
         </TabsContent>
@@ -160,7 +160,7 @@ export default async function CostPage() {
           <OperationCostBreakdown data={opChartData} />
           <DataTable
             columns={opColumns}
-            data={operationCosts as unknown as Record<string, unknown>[]}
+            data={operationCosts.map(o => ({ ...o, category: o.category, subcategory: o.subcategory, values: o.values } as Record<string, unknown>))}
             caption="운영비 상세"
           />
         </TabsContent>

@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import { getPNLData } from "@/lib/data";
 import { deslugify } from "@/lib/slugify";
 import { formatKRW, formatPercent } from "@/lib/format";
-import { MONTHS_KO, CLIENT_COLORS } from "@/lib/constants";
+import { MONTHS_KO, CLIENT_COLORS, FALLBACK_COLOR } from "@/lib/constants";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { SummaryCard } from "@/components/dashboard/summary-card";
 import { ChartWrapper } from "@/components/dashboard/chart-wrapper";
@@ -32,7 +34,10 @@ export default async function ClientDetailPage({ params }: PageProps) {
 
   const clientRevenue = data.revenueByClient.find(
     (c) => c.name === clientName
-  )!;
+  );
+  if (!clientRevenue) {
+    notFound();
+  }
   const clientCost = data.costByClient.find((c) => c.name === clientName);
 
   const revenueYTD = clientRevenue.values.ytd;
@@ -86,10 +91,14 @@ export default async function ClientDetailPage({ params }: PageProps) {
     },
   ];
 
-  const clientColor = CLIENT_COLORS[clientName];
+  const clientColor = CLIENT_COLORS[clientName] ?? FALLBACK_COLOR;
 
   return (
     <div className="space-y-6">
+      <Link href="/revenue" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-2">
+        <ArrowLeft className="h-4 w-4" />
+        매출 목록으로
+      </Link>
       <Header title={clientName} description="클라이언트 상세" />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
