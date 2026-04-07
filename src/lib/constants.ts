@@ -39,7 +39,6 @@ export const NAV_ITEMS = [
   { label: '홈', href: '/', icon: 'LayoutDashboard' },
   { label: '매출', href: '/revenue', icon: 'TrendingUp' },
   { label: '비용', href: '/cost', icon: 'Receipt' },
-  { label: '리소스', href: '/resources', icon: 'Users' },
   { label: '목표', href: '/goals', icon: 'Target' },
 ];
 

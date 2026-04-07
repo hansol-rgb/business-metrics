@@ -1,112 +1,35 @@
 import { getPNLData } from "@/lib/data";
 import { Header } from "@/components/layout/header";
 import { SummaryCard } from "@/components/dashboard/summary-card";
-import { DataTable } from "@/components/dashboard/data-table";
-import { CostClientBar } from "@/components/dashboard/cost-client-bar";
-import { CostPackageBar } from "@/components/dashboard/cost-package-bar";
-import { OperationCostBreakdown } from "@/components/dashboard/operation-cost-breakdown";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs";
-import { formatKRW, formatKRWFull } from "@/lib/format";
-import { MONTHS_KO, MONTH_KEYS, CLIENT_COLORS, PACKAGE_COLORS } from "@/lib/constants";
-import type { MonthlyValues } from "@/types/pnl";
-
-type MonthKey = (typeof MONTH_KEYS)[number];
-
-function valuesCell(field: MonthKey | "ytd") {
-  return (row: Record<string, unknown>) =>
-    formatKRW((row.values as MonthlyValues)[field]);
-}
-
-function monthColumns() {
-  return MONTH_KEYS.map((key, i) => ({
-    key,
-    header: MONTHS_KO[i],
-    cell: valuesCell(key),
-    align: "right" as const,
-  }));
-}
-
-function ytdColumn(header = "YTD") {
-  return {
-    key: "ytd",
-    header,
-    cell: valuesCell("ytd"),
-    align: "right" as const,
-  };
-}
+import { CostRankingList } from "@/components/dashboard/cost-ranking-list";
+import { formatKRW, formatKRWFull, formatNumber } from "@/lib/format";
 
 export default async function CostPage() {
   const data = await getPNLData();
 
   const {
     costByClient,
-    costByPackage,
     operationCosts,
     grandTotalCost,
     totalProjectCost,
     refOperationCost,
+    resources,
   } = data;
 
-  const clientChartData = costByClient
-    .map((c) => ({
-      name: c.name,
-      ytd: c.values.ytd,
-      color: CLIENT_COLORS[c.name] ?? "#94A3B8",
-    }))
-    .sort((a, b) => b.ytd - a.ytd);
+  const costItems = [
+    ...costByClient
+      .filter((c) => c.values.ytd > 0)
+      .map((c) => ({ name: c.name, amount: c.values.ytd, category: "프로젝트 직접비" })),
+    ...operationCosts
+      .filter((c) => c.values.ytd > 0)
+      .map((c) => ({ name: c.subcategory, amount: c.values.ytd, category: "운영비" })),
+  ].sort((a, b) => b.amount - a.amount);
 
-  const packageChartData = costByPackage
-    .map((p) => ({
-      name: p.name,
-      ytd: p.values.ytd,
-      color: PACKAGE_COLORS[p.name] ?? "#94A3B8",
-    }))
-    .sort((a, b) => b.ytd - a.ytd);
-
-  const opByCategory = Object.fromEntries(
-    operationCosts.map((c) => [c.category, c])
-  );
-  const opChartData = MONTH_KEYS.map((key, i) => ({
-    month: MONTHS_KO[i],
-    project: opByCategory["Project Operation"]?.values[key] ?? 0,
-    product: opByCategory["Product Operation"]?.values[key] ?? 0,
-    software: opByCategory["Software Subscription"]?.values[key] ?? 0,
-  }));
-
-  const clientColumns = [
-    { key: "name", header: "고객" },
-    ytdColumn(),
-    ...monthColumns(),
-  ];
-
-  const packageColumns = [
-    { key: "name", header: "패키지" },
-    ytdColumn(),
-    ...monthColumns(),
-  ];
-
-  const opColumns = [
-    { key: "subcategory", header: "항목" },
-    { key: "category", header: "카테고리" },
-    ytdColumn(),
-    ...monthColumns(),
-  ];
-
-  const sortedClients = [...costByClient].sort(
-    (a, b) => b.values.ytd - a.values.ytd
-  );
-  const sortedPackages = [...costByPackage].sort(
-    (a, b) => b.values.ytd - a.values.ytd
-  );
+  const maxAmount = costItems[0]?.amount ?? 1;
 
   return (
     <div className="space-y-6">
-      <Header title="비용" description="고객별, 패키지별, 운영비 상세 (1-3월 실적, 4-12월 전망)" />
+      <Header title="비용" description="비용 현황 및 시간 투입 (1-3월 실적, 4-12월 전망)" />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <SummaryCard
@@ -126,44 +49,25 @@ export default async function CostPage() {
         />
       </div>
 
-      <Tabs defaultValue="client">
-        <TabsList>
-          <TabsTrigger value="client">고객별</TabsTrigger>
-          <TabsTrigger value="package">패키지별</TabsTrigger>
-          <TabsTrigger value="operation">운영비</TabsTrigger>
-        </TabsList>
+      <CostRankingList items={costItems} maxAmount={maxAmount} />
 
-        <TabsContent value="client" className="space-y-6">
-          <CostClientBar data={clientChartData} />
-          <DataTable
-            columns={clientColumns}
-            data={sortedClients.map(c => ({ ...c, name: c.name, values: c.values } as Record<string, unknown>))}
-            caption="고객별 비용 상세"
+      <div className="space-y-2">
+        <h2 className="text-base font-semibold">시간으로 투입한 비용</h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <SummaryCard
+            title="총 투입 시간 (연간누계)"
+            value={`${formatNumber(resources.totalHours.ytd)}시간`}
           />
-        </TabsContent>
-
-        <TabsContent value="package" className="space-y-6">
-          <CostPackageBar data={packageChartData} />
-          <DataTable
-            columns={packageColumns}
-            data={sortedPackages.map(p => ({ ...p, name: p.name, values: p.values } as Record<string, unknown>))}
-            caption="패키지별 비용 상세"
+          <SummaryCard
+            title="정규직 (연간누계)"
+            value={`${formatNumber(resources.fulltimeHours.ytd)}시간`}
           />
-        </TabsContent>
-
-        <TabsContent value="operation" className="space-y-6">
-          <OperationCostBreakdown data={opChartData} />
-          <DataTable
-            columns={opColumns}
-            data={operationCosts.map(o => ({ ...o, category: o.category, subcategory: o.subcategory, values: o.values } as Record<string, unknown>))}
-            caption="운영비 상세"
+          <SummaryCard
+            title="프리랜서 (연간누계)"
+            value={`${formatNumber(resources.freelancerHours.ytd)}시간`}
           />
-        </TabsContent>
-      </Tabs>
-
-      <p className="text-xs text-muted-foreground mt-8">
-        * 1-3월 실적 데이터, 4-12월 전망 기준
-      </p>
+        </div>
+      </div>
     </div>
   );
 }
