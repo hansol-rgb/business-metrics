@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getPNLData } from "@/lib/data";
 import { deslugify } from "@/lib/slugify";
 import { formatKRW, formatPercent } from "@/lib/format";
-import { MONTHS_KO, CLIENT_COLORS, FALLBACK_COLOR } from "@/lib/constants";
+import { MONTHS_KO, MONTH_KEYS, CLIENT_COLORS, FALLBACK_COLOR } from "@/lib/constants";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Header } from "@/components/layout/header";
@@ -11,11 +11,6 @@ import { ChartWrapper } from "@/components/dashboard/chart-wrapper";
 import { DataTable } from "@/components/dashboard/data-table";
 import { ClientMarginChart } from "@/components/dashboard/client-margin-chart";
 import type { ClientMarginData } from "@/components/dashboard/client-margin-chart";
-
-const monthKeys = [
-  "m1", "m2", "m3", "m4", "m5", "m6",
-  "m7", "m8", "m9", "m10", "m11", "m12",
-] as const;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -45,7 +40,7 @@ export default async function ClientDetailPage({ params }: PageProps) {
   const marginYTD = revenueYTD - costYTD;
   const marginPct = revenueYTD !== 0 ? (marginYTD / revenueYTD) * 100 : 0;
 
-  const chartData: ClientMarginData[] = monthKeys.map((key, i) => {
+  const chartData: ClientMarginData[] = MONTH_KEYS.map((key, i) => {
     const rev = clientRevenue.values[key];
     const cost = clientCost?.values[key] ?? 0;
     return {

@@ -14,7 +14,13 @@ function parseNumber(raw: string): number {
   if (!raw || raw.trim() === '') return 0;
   const cleaned = raw.trim().replace(/%$/, '').replace(/,/g, '');
   const val = parseFloat(cleaned);
-  return isNaN(val) ? 0 : val;
+  if (isNaN(val)) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`parseNumber: failed to parse "${raw}"`);
+    }
+    return 0;
+  }
+  return val;
 }
 
 function parseRow(cells: string[]): MonthlyValues {
