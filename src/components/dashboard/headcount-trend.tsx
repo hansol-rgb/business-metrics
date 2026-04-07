@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import { ACTUAL_MONTHS } from "@/lib/constants";
+import { CHART_MARGIN, CHART_GRID_DASH, SEMANTIC_COLORS } from "@/lib/chart-config";
 
 interface HeadcountTrendProps {
   data: { month: string; headcount: number }[];
@@ -22,24 +23,24 @@ export function HeadcountTrend({ data }: HeadcountTrendProps) {
   }));
 
   return (
-    <LineChart data={chartData}>
-      <CartesianGrid strokeDasharray="3 3" />
+    <LineChart data={chartData} margin={CHART_MARGIN}>
+      <CartesianGrid strokeDasharray={CHART_GRID_DASH} className="stroke-muted" />
       <XAxis dataKey="month" />
       <YAxis allowDecimals={false} />
       <Tooltip />
       <Line
         dataKey="actual"
         name="실적"
-        stroke="#3B82F6"
+        stroke={SEMANTIC_COLORS.revenue}
         strokeWidth={2}
         dot={{ r: 4 }}
       />
       <Line
         dataKey="forecast"
         name="예측"
-        stroke="#3B82F6"
+        stroke={SEMANTIC_COLORS.revenue}
         strokeWidth={2}
-        strokeDasharray="5 5"
+        strokeDasharray="8 4"
         dot={{ r: 4 }}
       />
     </LineChart>

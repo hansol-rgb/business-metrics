@@ -1,7 +1,8 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, CartesianGrid } from "recharts";
 import { formatKRW } from "@/lib/format";
+import { CHART_MARGIN_VERTICAL, CHART_GRID_DASH } from "@/lib/chart-config";
 
 interface ClientBarData {
   name: string;
@@ -17,7 +18,8 @@ export function ClientRevenueBar({ data }: ClientRevenueBarProps) {
   const sorted = [...data].sort((a, b) => b.ytd - a.ytd);
 
   return (
-    <BarChart layout="vertical" data={sorted} margin={{ left: 80, right: 20 }}>
+    <BarChart layout="vertical" data={sorted} margin={CHART_MARGIN_VERTICAL}>
+      <CartesianGrid strokeDasharray={CHART_GRID_DASH} className="stroke-muted" horizontal={false} />
       <XAxis type="number" tickFormatter={(v: number) => formatKRW(v)} />
       <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 12 }} />
       <Tooltip

@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { ChartWrapper } from "@/components/dashboard/chart-wrapper";
 import { formatKRW } from "@/lib/format";
+import { CHART_MARGIN_VERTICAL, CHART_GRID_DASH } from "@/lib/chart-config";
 
 interface CostClientBarProps {
   data: { name: string; ytd: number; color: string }[];
@@ -19,8 +20,8 @@ interface CostClientBarProps {
 export function CostClientBar({ data }: CostClientBarProps) {
   return (
     <ChartWrapper title="고객별 비용" description="YTD 기준" height={Math.max(300, data.length * 40)}>
-      <BarChart layout="vertical" data={data} margin={{ left: 20, right: 30 }}>
-        <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+      <BarChart layout="vertical" data={data} margin={CHART_MARGIN_VERTICAL}>
+        <CartesianGrid strokeDasharray={CHART_GRID_DASH} className="stroke-muted" horizontal={false} />
         <XAxis type="number" tickFormatter={(v) => formatKRW(v)} />
         <YAxis type="category" dataKey="name" width={100} />
         <Tooltip formatter={(v) => formatKRW(Number(v))} />

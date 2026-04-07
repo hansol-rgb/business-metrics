@@ -1,8 +1,9 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from "recharts";
 import { formatKRW } from "@/lib/format";
 import { CLIENT_COLORS, FALLBACK_COLOR } from "@/lib/constants";
+import { CHART_MARGIN, CHART_GRID_DASH } from "@/lib/chart-config";
 
 interface ClientRevenueStackedProps {
   clients: string[];
@@ -14,13 +15,14 @@ export function ClientRevenueStacked({
   data,
 }: ClientRevenueStackedProps) {
   return (
-    <BarChart data={data} margin={{ left: 20, right: 20 }}>
+    <BarChart data={data} margin={CHART_MARGIN}>
+      <CartesianGrid strokeDasharray={CHART_GRID_DASH} className="stroke-muted" />
       <XAxis dataKey="month" tick={{ fontSize: 12 }} />
       <YAxis tickFormatter={(v: number) => formatKRW(v)} />
       <Tooltip
         formatter={(value, name) => [formatKRW(Number(value)), String(name)]}
       />
-      <Legend />
+      <Legend wrapperStyle={{ fontSize: 12 }} />
       {clients.map((client) => (
         <Bar
           key={client}

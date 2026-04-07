@@ -73,7 +73,7 @@ export function RevenuePageClient({
       cell: (row: ClientTableRow) => (
         <Link
           href={`/clients/${row.slug}`}
-          className="text-blue-600 hover:underline dark:text-blue-400"
+          className="text-primary hover:underline"
         >
           {row.name}
         </Link>

@@ -25,13 +25,15 @@ export function ChartWrapper({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="text-base">{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={height}>
-          {children as React.ReactElement}
-        </ResponsiveContainer>
+        <div role="img" aria-label={title}>
+          <ResponsiveContainer width="100%" height={height}>
+            {children as React.ReactElement}
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );

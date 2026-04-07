@@ -11,6 +11,7 @@ import {
   Legend,
 } from "recharts";
 import { formatKRW } from "@/lib/format";
+import { CHART_MARGIN, CHART_GRID_DASH, SEMANTIC_COLORS } from "@/lib/chart-config";
 
 export interface ClientMarginData {
   month: string;
@@ -47,22 +48,22 @@ function CustomTooltip({
 }
 
 export function ClientMarginChart({ data, clientColor }: ClientMarginChartProps) {
-  const revenueColor = clientColor ?? "#3B82F6";
+  const revenueColor = clientColor ?? SEMANTIC_COLORS.revenue;
 
   return (
-    <ComposedChart data={data}>
-      <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+    <ComposedChart data={data} margin={CHART_MARGIN}>
+      <CartesianGrid strokeDasharray={CHART_GRID_DASH} className="stroke-muted" />
       <XAxis dataKey="month" tick={{ fontSize: 12 }} />
       <YAxis tick={{ fontSize: 12 }} tickFormatter={formatKRW} />
       <Tooltip content={<CustomTooltip />} />
-      <Legend />
+      <Legend wrapperStyle={{ fontSize: 12 }} />
       <Bar dataKey="revenue" name="매출" fill={revenueColor} radius={[4, 4, 0, 0]} />
       <Bar dataKey="cost" name="비용" fill="#F43F5E" radius={[4, 4, 0, 0]} />
       <Line
         type="monotone"
         dataKey="margin"
         name="마진"
-        stroke="#10B981"
+        stroke={SEMANTIC_COLORS.margin}
         strokeWidth={2}
         dot={{ r: 3 }}
       />
