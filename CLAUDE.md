@@ -60,6 +60,12 @@ page.tsx (server, async) → getPNLData() → transform data → render <ChartCo
 - `formatKRWFull(n)` — Full comma format: 1,271,379,006
 - Card titles use abbreviated, table cells use full format.
 
+## Goals Page (`/goals`)
+
+Tracks Q2 CM/Hour improvement (19만→24만) for 공헌이익 13.6억 target. Goal constants in `Q2_GOAL` in constants.ts.
+
+Efficiency improvement items come from `src/data/growth-items.json` (not from Google Sheets). Edit the JSON directly to add/update items. Schema defined in `src/lib/growth.ts` (`GrowthItem` interface).
+
 ## Key Data
 
 Revenue has 12 clients, Cost has 14 clients (Gitlab and VIVI are cost-only, no revenue). `CLIENT_COLORS` in constants.ts must include all clients from both lists. Use `FALLBACK_COLOR` for any missing.
