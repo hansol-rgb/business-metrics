@@ -41,21 +41,21 @@ export default async function HomePage() {
 
   const marginTrend =
     summary.contributionMarginPct.ytd >= 80 ? "up" : "down";
-  const diffTrend = summary.diff.ytd > 0 ? "up" : "down";
-  const diffLabel = summary.diff.ytd > 0 ? "목표 초과" : "목표 미달";
+  const diffTrend = summary.diff.ytd >= 0 ? "up" : "down";
+  const diffLabel = summary.diff.ytd >= 0 ? "목표 초과" : "목표 미달";
 
   return (
     <div className="space-y-6">
-      <Header title="대시보드" description="BubbleShare 사업 지표 요약" />
+      <Header title="대시보드" description="BubbleShare 사업 지표 요약 (1-3월 실적, 4-12월 전망)" />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <SummaryCard
-          title="총 매출 (YTD)"
+          title="총 매출 (연간누계)"
           value={formatKRW(summary.totalRevenue.ytd)}
           subValue={`연간 전망 ${formatKRW(summary.totalRevenue.ytdProjection)}`}
         />
         <SummaryCard
-          title="공헌이익 (YTD)"
+          title="공헌이익 (연간누계)"
           value={formatKRW(summary.contributionMargin.ytd)}
           subValue={formatPercent(summary.contributionMarginPct.ytd)}
           trend={marginTrend}
@@ -68,7 +68,7 @@ export default async function HomePage() {
           trendLabel={diffLabel}
         />
         <SummaryCard
-          title="CM/Hour"
+          title="시간당 공헌이익"
           value={formatKRW(summary.cmPerHour.ytd)}
         />
       </div>
@@ -77,6 +77,10 @@ export default async function HomePage() {
         <RevenueTrendChart data={trendData} />
         <RevenueVsGoalChart data={barData} />
       </div>
+
+      <p className="text-xs text-muted-foreground mt-8">
+        * 1-3월 실적 데이터, 4-12월 전망 기준
+      </p>
     </div>
   );
 }

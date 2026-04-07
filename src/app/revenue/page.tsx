@@ -60,7 +60,7 @@ export default async function RevenuePage() {
 
   return (
     <div className="space-y-6">
-      <Header title="매출" description="고객별, 패키지별 매출 상세" />
+      <Header title="매출" description="고객별, 패키지별 매출 상세 (1-3월 실적, 4-12월 전망)" />
       <RevenuePageClient
         clientBarData={clientBarData}
         clientNames={clientNames}
@@ -71,6 +71,10 @@ export default async function RevenuePage() {
         packageTrendData={packageTrendData}
         packageTableData={packageTableData}
       />
+
+      <p className="text-xs text-muted-foreground mt-8">
+        * 1-3월 실적 데이터, 4-12월 전망 기준
+      </p>
     </div>
   );
 }

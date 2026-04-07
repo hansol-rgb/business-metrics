@@ -12,15 +12,10 @@ import {
   TabsContent,
 } from "@/components/ui/tabs";
 import { formatKRW, formatKRWFull } from "@/lib/format";
-import { MONTHS_KO, CLIENT_COLORS, PACKAGE_COLORS } from "@/lib/constants";
+import { MONTHS_KO, MONTH_KEYS, CLIENT_COLORS, PACKAGE_COLORS } from "@/lib/constants";
 import type { MonthlyValues } from "@/types/pnl";
 
-const monthKeys = [
-  "m1", "m2", "m3", "m4", "m5", "m6",
-  "m7", "m8", "m9", "m10", "m11", "m12",
-] as const;
-
-type MonthKey = (typeof monthKeys)[number];
+type MonthKey = (typeof MONTH_KEYS)[number];
 
 function valuesCell(field: MonthKey | "ytd") {
   return (row: Record<string, unknown>) =>
@@ -28,7 +23,7 @@ function valuesCell(field: MonthKey | "ytd") {
 }
 
 function monthColumns() {
-  return monthKeys.map((key, i) => ({
+  return MONTH_KEYS.map((key, i) => ({
     key,
     header: MONTHS_KO[i],
     cell: valuesCell(key),
@@ -76,7 +71,7 @@ export default async function CostPage() {
   const opByCategory = Object.fromEntries(
     operationCosts.map((c) => [c.category, c])
   );
-  const opChartData = monthKeys.map((key, i) => ({
+  const opChartData = MONTH_KEYS.map((key, i) => ({
     month: MONTHS_KO[i],
     project: opByCategory["Project Operation"]?.values[key] ?? 0,
     product: opByCategory["Product Operation"]?.values[key] ?? 0,
@@ -111,21 +106,21 @@ export default async function CostPage() {
 
   return (
     <div className="space-y-6">
-      <Header title="비용" description="고객별, 패키지별, 운영비 상세" />
+      <Header title="비용" description="고객별, 패키지별, 운영비 상세 (1-3월 실적, 4-12월 전망)" />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <SummaryCard
-          title="총 비용 (YTD)"
+          title="총 비용 (연간누계)"
           value={formatKRW(grandTotalCost.ytd)}
           subValue={formatKRWFull(grandTotalCost.ytd)}
         />
         <SummaryCard
-          title="프로젝트 비용 (YTD)"
+          title="프로젝트 비용 (연간누계)"
           value={formatKRW(totalProjectCost.ytd)}
           subValue={formatKRWFull(totalProjectCost.ytd)}
         />
         <SummaryCard
-          title="운영비 (YTD)"
+          title="운영비 (연간누계)"
           value={formatKRW(refOperationCost.ytd)}
           subValue={formatKRWFull(refOperationCost.ytd)}
         />
@@ -165,6 +160,10 @@ export default async function CostPage() {
           />
         </TabsContent>
       </Tabs>
+
+      <p className="text-xs text-muted-foreground mt-8">
+        * 1-3월 실적 데이터, 4-12월 전망 기준
+      </p>
     </div>
   );
 }

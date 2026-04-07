@@ -31,3 +31,10 @@ export function formatPercent(n: number): string {
 export function formatNumber(n: number): string {
   return Math.round(n).toLocaleString('en-US');
 }
+
+export function formatKRWStyled(n: number): { text: string; isNegative: boolean } {
+  return {
+    text: formatKRW(n),
+    isNegative: n < 0,
+  };
+}

@@ -26,9 +26,9 @@ export function OperationCostBreakdown({ data }: OperationCostBreakdownProps) {
         <YAxis tickFormatter={(v) => formatKRW(v)} />
         <Tooltip formatter={(v) => formatKRW(Number(v))} />
         <Legend wrapperStyle={{ fontSize: 12 }} />
-        <Bar dataKey="project" name="Project Operation" fill={SEMANTIC_COLORS.projectOp} radius={[4, 4, 0, 0]} />
-        <Bar dataKey="product" name="Product Operation" fill={SEMANTIC_COLORS.productOp} radius={[4, 4, 0, 0]} />
-        <Bar dataKey="software" name="Software Subscription" fill={SEMANTIC_COLORS.software} radius={[4, 4, 0, 0]} />
+        <Bar dataKey="project" name="프로젝트 운영" fill={SEMANTIC_COLORS.projectOp} radius={[4, 4, 0, 0]} />
+        <Bar dataKey="product" name="프로덕트 운영" fill={SEMANTIC_COLORS.productOp} radius={[4, 4, 0, 0]} />
+        <Bar dataKey="software" name="소프트웨어 구독" fill={SEMANTIC_COLORS.software} radius={[4, 4, 0, 0]} />
       </BarChart>
     </ChartWrapper>
   );
