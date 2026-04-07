@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, TrendingUp, Receipt, Users } from "lucide-react";
+import { LayoutDashboard, TrendingUp, Receipt, Users, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { href: "/revenue", label: "매출", icon: TrendingUp },
   { href: "/cost", label: "비용", icon: Receipt },
   { href: "/resources", label: "리소스", icon: Users },
+  { href: "/goals", label: "목표", icon: Target },
 ] as const;
 
 export function Sidebar() {

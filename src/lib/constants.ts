@@ -40,4 +40,15 @@ export const NAV_ITEMS = [
   { label: '매출', href: '/revenue', icon: 'TrendingUp' },
   { label: '비용', href: '/cost', icon: 'Receipt' },
   { label: '리소스', href: '/resources', icon: 'Users' },
+  { label: '목표', href: '/goals', icon: 'Target' },
 ];
+
+// Q2 Growth Goal
+export const Q2_GOAL = {
+  targetCM: 1_360_000_000, // 공헌이익 13.6억
+  targetCMPerHour: 240_000, // CM/Hour 24만
+  q1CM: 1_077_647_501, // 1분기 실적
+  q1CMPerHour: 189_895, // 1분기 CM/Hour
+  q1TotalHours: 5_675,
+  monthlyPace: [210_000, 230_000, 280_000], // 4,5,6월 목표 CM/Hour
+};

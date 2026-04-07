@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "디자인 컴포넌트 라이브러리 표준화",
+    "owner": "PD",
+    "category": "템플릿",
+    "estimatedHoursSaved": 20,
+    "status": "planned",
+    "completedAt": null,
+    "description": "반복 사용되는 UI 컴포넌트를 표준화하여 프로젝트 초기 세팅 시간 절감"
+  },
+  {
+    "id": 2,
+    "title": "코드 보일러플레이트 자동 생성",
+    "owner": "PE",
+    "category": "자동화",
+    "estimatedHoursSaved": 30,
+    "status": "planned",
+    "completedAt": null,
+    "description": "프로젝트 초기 구조 자동 생성으로 PE 세팅 시간 절감"
+  },
+  {
+    "id": 3,
+    "title": "QA 체크리스트 프로세스 도입",
+    "owner": "PD",
+    "category": "프로세스",
+    "estimatedHoursSaved": 15,
+    "status": "planned",
+    "completedAt": null,
+    "description": "납품 전 품질 검수 표준화로 재작업 시간 감소"
+  }
+]
