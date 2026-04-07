@@ -41,7 +41,7 @@ export function RevenueTrendChart({ data }: RevenueTrendChartProps) {
           name="실적"
           type="monotone"
           dataKey="actual"
-          stroke={SEMANTIC_COLORS.revenue}
+          stroke={SEMANTIC_COLORS.actual}
           strokeWidth={2}
           dot={{ r: 4 }}
           connectNulls={false}
@@ -50,7 +50,7 @@ export function RevenueTrendChart({ data }: RevenueTrendChartProps) {
           name="전망"
           type="monotone"
           dataKey="forecast"
-          stroke={SEMANTIC_COLORS.revenueForecast}
+          stroke={SEMANTIC_COLORS.forecast}
           strokeWidth={2}
           strokeDasharray="8 4"
           dot={{ r: 3 }}

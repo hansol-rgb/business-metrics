@@ -31,14 +31,14 @@ export function HeadcountTrend({ data }: HeadcountTrendProps) {
       <Line
         dataKey="actual"
         name="실적"
-        stroke={SEMANTIC_COLORS.revenue}
+        stroke={SEMANTIC_COLORS.actual}
         strokeWidth={2}
         dot={{ r: 4 }}
       />
       <Line
         dataKey="forecast"
         name="예측"
-        stroke={SEMANTIC_COLORS.revenue}
+        stroke={SEMANTIC_COLORS.actual}
         strokeWidth={2}
         strokeDasharray="8 4"
         dot={{ r: 4 }}

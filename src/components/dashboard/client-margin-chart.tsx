@@ -48,7 +48,7 @@ function CustomTooltip({
 }
 
 export function ClientMarginChart({ data, clientColor }: ClientMarginChartProps) {
-  const revenueColor = clientColor ?? SEMANTIC_COLORS.revenue;
+  const revenueColor = clientColor ?? SEMANTIC_COLORS.actual;
 
   return (
     <ComposedChart data={data} margin={CHART_MARGIN}>

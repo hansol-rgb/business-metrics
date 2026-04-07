@@ -33,7 +33,7 @@ export function RevenueVsGoalChart({ data }: RevenueVsGoalChartProps) {
         <YAxis tickFormatter={(v: number) => formatKRW(v)} width={70} />
         <Tooltip content={<ChartTooltip />} />
         <Legend wrapperStyle={{ fontSize: 12 }} />
-        <Bar name="매출" dataKey="revenue" fill={SEMANTIC_COLORS.revenue} radius={[4, 4, 0, 0]} />
+        <Bar name="매출" dataKey="revenue" fill={SEMANTIC_COLORS.actual} radius={[4, 4, 0, 0]} />
         <Bar name="목표" dataKey="goal" fill={SEMANTIC_COLORS.goal} radius={[4, 4, 0, 0]} />
       </BarChart>
     </ChartWrapper>
